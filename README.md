@@ -13,6 +13,18 @@ By [Stylus Nexus](https://github.com/stylusnexus).
 - **First moves** — concrete, this-week actions
 - **Where to go next** — fork [full-starter](https://github.com/stylusnexus/full-starter) for a complete repo, or install skills directly from [agent-plugins](https://github.com/stylusnexus/agent-plugins) into a project you already have
 
+## Prompts
+
+Both prompts on the page are also plain files, so you can grab one without opening a browser:
+
+```bash
+curl -s https://raw.githubusercontent.com/stylusnexus/startup-plan/main/prompts/validation-gate.md
+curl -s https://raw.githubusercontent.com/stylusnexus/startup-plan/main/prompts/agentic-principles.md
+```
+
+- [`prompts/validation-gate.md`](prompts/validation-gate.md) — run before you scaffold anything, one time
+- [`prompts/agentic-principles.md`](prompts/agentic-principles.md) — paste into CLAUDE.md / AGENTS.md as standing rules
+
 ## Editing
 
 Single self-contained `index.html`, no build step, no dependencies. Served via GitHub Pages from `main`.
