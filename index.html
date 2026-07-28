@@ -27,6 +27,7 @@
     --signal:    #c1440e;
     --signal-ink:#7a2a08;
     --ok:        #2f6b4f;
+    --caution:   #8a6a00;
     --shadow:    rgba(28, 26, 22, .08);
 
     --mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -44,18 +45,18 @@
     :root {
       --ground: #16140f; --paper: #1d1a14; --ink: #ede8db; --ink-soft: #b8ae94;
       --ink-faint: #8a8068; --rule: #3a3527; --rule-hard: #ede8db;
-      --signal: #e2703a; --signal-ink: #f4a878; --ok: #6fb896; --shadow: rgba(0,0,0,.5);
+      --signal: #e2703a; --signal-ink: #f4a878; --ok: #6fb896; --caution: #e0b64a; --shadow: rgba(0,0,0,.5);
     }
   }
   :root[data-theme="dark"] {
     --ground: #16140f; --paper: #1d1a14; --ink: #ede8db; --ink-soft: #b8ae94;
     --ink-faint: #8a8068; --rule: #3a3527; --rule-hard: #ede8db;
-    --signal: #e2703a; --signal-ink: #f4a878; --ok: #6fb896; --shadow: rgba(0,0,0,.5);
+    --signal: #e2703a; --signal-ink: #f4a878; --ok: #6fb896; --caution: #e0b64a; --shadow: rgba(0,0,0,.5);
   }
   :root[data-theme="light"] {
     --ground: #f5f3ee; --paper: #fffdf8; --ink: #1c1a16; --ink-soft: #57503f;
     --ink-faint: #857b64; --rule: #ddd5c2; --rule-hard: #1c1a16;
-    --signal: #c1440e; --signal-ink: #7a2a08; --ok: #2f6b4f; --shadow: rgba(28,26,22,.08);
+    --signal: #c1440e; --signal-ink: #7a2a08; --ok: #2f6b4f; --caution: #8a6a00; --shadow: rgba(28,26,22,.08);
   }
 
   html { -webkit-text-size-adjust: 100%; }
@@ -190,6 +191,40 @@
   }
   .choice-card.primary .cta { color: var(--signal-ink); }
   .choice-card:not(.primary) .cta { color: var(--ink); }
+
+  /* ---- prompt block (collapsed by default) ---- */
+  .prompt-card {
+    background: var(--paper); border: 1px solid var(--rule-hard); border-radius: 8px;
+    margin-top: 1.4rem; overflow: hidden;
+  }
+  .prompt-card summary {
+    cursor: pointer; padding: 1.1rem 1.4rem; list-style: none;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .prompt-card summary::-webkit-details-marker { display: none; }
+  .prompt-card summary h3 { margin: 0; color: var(--caution); }
+  .prompt-card summary .disclosure {
+    font-family: var(--mono); font-size: .78rem; color: var(--ink-faint);
+    flex-shrink: 0; transition: transform .15s ease;
+  }
+  .prompt-card[open] summary .disclosure { transform: rotate(90deg); }
+  .prompt-card .prompt-body { padding: 0 1.4rem 1.5rem; }
+  .prompt-card .prompt-body > p:first-child { margin-top: 0; }
+  .pre-wrap { position: relative; margin-top: 1rem; }
+  .prompt-card pre {
+    margin: 0; background: var(--ground); border-radius: 5px; padding: 1.1rem 1.2rem;
+    overflow-x: auto; font-family: var(--mono); font-size: .82rem; line-height: 1.7; color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .copy-btn {
+    position: absolute; top: .6rem; right: .6rem; font-family: var(--mono); font-size: .72rem;
+    font-weight: 700; letter-spacing: .03em; color: var(--ink-soft); background: var(--paper);
+    border: 1px solid var(--rule-hard); border-radius: 4px; padding: .3rem .6rem; cursor: pointer;
+  }
+  .copy-btn:hover { color: var(--ink); }
+  .copy-btn[data-copied="true"] { color: var(--ok); border-color: var(--ok); }
+  .prompt-source { font-size: .82rem; color: var(--ink-faint); margin-top: .8rem; }
+  .prompt-source a { color: var(--signal-ink); }
 
   /* ---- coverage table ---- */
   .coverage { display: flex; flex-direction: column; }
@@ -381,7 +416,58 @@
         <h3>Test at more than one viewport</h3>
         <p>A layout that holds at 1920px can break at 768px. Separate desktop and mobile projects in the Playwright config, not an afterthought.</p>
       </div>
+      <div class="tip">
+        <h3>Split memory by scope, not by size</h3>
+        <p>What every agent needs (deploy target, workflow rules) goes in shared project memory. What only one agent needs (a specialist's domain quirks) goes in that agent's own memory. Get this backwards and you either bloat every agent's context or lose knowledge that should've been shared.</p>
+      </div>
+      <div class="tip">
+        <h3>Default CI to manual, tier up from there</h3>
+        <p>Every workflow starts as a manual trigger &mdash; zero cost until you actually want a check. Add smoke tests on PRs once local checks aren't enough. Save nightly regression and visual diffing for when you have minutes to spare.</p>
+      </div>
+      <div class="tip">
+        <h3>Screenshot it, don't eyeball it</h3>
+        <p>Feed a fresh screenshot to a vision-capable model instead of manually scanning the UI. It catches spacing, alignment, and contrast reliably &mdash; and it's the check that gets skipped first when you're in a hurry. It won't catch a bad design decision, so it's a floor, not a replacement for review.</p>
+      </div>
+      <div class="tip">
+        <h3>Parallel dispatch, when you're ready for it</h3>
+        <p>Only once two tasks share no state and don't depend on each other's output &mdash; a UI pass and a copy pass on the same feature, say. Dispatch both, let them work independently, synthesize the results yourself. No message bus, no orchestration layer. Just tasks that were never sequential to begin with.</p>
+      </div>
     </div>
+
+    <details class="prompt-card">
+      <summary>
+        <h3>Before any of this: a validation gate</h3>
+        <span class="disclosure">▸ expand</span>
+      </summary>
+      <div class="prompt-body">
+        <p>The most expensive mistake isn't a bad pattern &mdash; it's building the wrong thing well. Paste this into your agent before you scaffold anything.</p>
+        <div class="pre-wrap">
+          <button type="button" class="copy-btn" data-copy-target="validation-gate-prompt">Copy</button>
+<pre id="validation-gate-prompt">Before we start a new project, run me through a validation gate. Don't
+let me skip a step because I'm excited, and push back if I try to write
+code before step 3 is done.
+
+1. Ask who the target user is and what's the most annoying part of
+   their day related to this idea. Help me write one sentence: "When
+   ___ happens, I want to ___, so I can ___."
+
+2. Classify it: painkiller (costs real hours or dollars every week) or
+   vitamin (nice to have). Tell me plainly if it's a vitamin -- that
+   doesn't clear this gate.
+
+3. Help me design the cheapest possible demand test I can run in 7
+   days -- a waitlist, a preorder, or a manual pilot offer -- and define
+   what "someone actually commits" looks like for this specific idea.
+   A soft "yes that's cool" doesn't count. Money or a hard commitment does.
+
+4. Only once I report back real evidence from step 3, help me scope a
+   24-hour MVP: one core loop, end to end. Ship it only if all three are
+   true -- a new user gets value within 60 seconds, that value is
+   immediate, and I can manually fix any bad output myself.</pre>
+        </div>
+        <p class="prompt-source">Adapted from the validation discipline in <em>The Vibe Coding Playbook</em> (Murugappan) &mdash; own the pain data, then prove willingness-to-pay before you open the code editor.</p>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -479,5 +565,40 @@
   </footer>
 </div>
 
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-copy-target'));
+      if (!target) return;
+      var text = target.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copied';
+        btn.setAttribute('data-copied', 'true');
+        setTimeout(function () {
+          btn.textContent = original === 'Copied' ? 'Copy' : original;
+          btn.removeAttribute('data-copied');
+        }, 1600);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { /* clipboard unavailable; text remains selectable */ }
+    document.body.removeChild(ta);
+  }
+</script>
 </body>
 </html>
