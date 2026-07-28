@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Startup Plan — Shipping with AI Agents</title>
+  <meta name="description" content="The loop, the failures already made, and where to fork or install. A practical playbook for shipping software with AI coding agents, from a team that does it daily." />
+
+  <meta property="og:title" content="The Startup Plan" />
+  <meta property="og:description" content="The loop, the failures already made, and where to fork or install. A practical playbook for shipping software with AI coding agents." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stylusnexus.github.io/startup-plan/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The Startup Plan" />
+  <meta name="twitter:description" content="The loop, the failures already made, and where to fork or install." />
+  <link rel="canonical" href="https://stylusnexus.github.io/startup-plan/" />
+
+<style>
+  :root {
+    --ground:    #f5f3ee;
+    --paper:     #fffdf8;
+    --ink:       #1c1a16;
+    --ink-soft:  #57503f;
+    --ink-faint: #857b64;
+    --rule:      #ddd5c2;
+    --rule-hard: #1c1a16;
+    --signal:    #c1440e;
+    --signal-ink:#7a2a08;
+    --ok:        #2f6b4f;
+    --shadow:    rgba(28, 26, 22, .08);
+
+    --mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --slab: Iowan Old Style, "Noto Serif", Georgia, ui-serif, serif;
+    --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    --step--1: clamp(.78rem, .76rem + .1vw, .84rem);
+    --step-0:  clamp(1rem, .96rem + .18vw, 1.08rem);
+    --step-1:  clamp(1.2rem, 1.1rem + .45vw, 1.5rem);
+    --step-2:  clamp(1.55rem, 1.3rem + 1.1vw, 2.3rem);
+    --step-3:  clamp(2.3rem, 1.75rem + 2.4vw, 4rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #16140f; --paper: #1d1a14; --ink: #ede8db; --ink-soft: #b8ae94;
+      --ink-faint: #8a8068; --rule: #3a3527; --rule-hard: #ede8db;
+      --signal: #e2703a; --signal-ink: #f4a878; --ok: #6fb896; --shadow: rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #16140f; --paper: #1d1a14; --ink: #ede8db; --ink-soft: #b8ae94;
+    --ink-faint: #8a8068; --rule: #3a3527; --rule-hard: #ede8db;
+    --signal: #e2703a; --signal-ink: #f4a878; --ok: #6fb896; --shadow: rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"] {
+    --ground: #f5f3ee; --paper: #fffdf8; --ink: #1c1a16; --ink-soft: #57503f;
+    --ink-faint: #857b64; --rule: #ddd5c2; --rule-hard: #1c1a16;
+    --signal: #c1440e; --signal-ink: #7a2a08; --ok: #2f6b4f; --shadow: rgba(28,26,22,.08);
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--ground); color: var(--ink); font-family: var(--sans);
+    font-size: var(--step-0); line-height: 1.62; margin: 0;
+    padding: 0 0 6rem; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--signal-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible, button:focus-visible {
+    outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 2px;
+  }
+  code {
+    font-family: var(--mono); font-size: .87em; background: var(--rule);
+    padding: .12em .36em; border-radius: 3px;
+  }
+  .wrap { max-width: 46rem; margin-inline: auto; padding-inline: clamp(1.1rem, .7rem + 2.2vw, 1.6rem); }
+  .wide { max-width: 58rem; }
+
+  header.hero {
+    background: var(--paper); border-bottom: 3px solid var(--rule-hard);
+    padding: clamp(2.5rem, 1.5rem + 5vw, 5.5rem) 0 clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+  .doc-stamp {
+    font-family: var(--mono); font-size: var(--step--1); letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-faint); display: flex; gap: .6rem 1.1rem;
+    flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; margin-bottom: 1.6rem;
+  }
+  .doc-stamp b { color: var(--signal-ink); font-weight: 700; }
+  h1 {
+    font-family: var(--slab); font-weight: 600; font-size: var(--step-3);
+    line-height: .98; letter-spacing: -.01em; margin: 0 0 1.1rem; text-wrap: balance;
+  }
+  h1 em { font-style: normal; color: var(--signal-ink); }
+  .dek { font-size: var(--step-1); line-height: 1.45; color: var(--ink-soft); max-width: 40ch; margin: 0; text-wrap: pretty; }
+
+  .loop-strip {
+    display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 2.2rem;
+    font-family: var(--mono); font-size: var(--step--1);
+  }
+  .loop-strip span {
+    padding: .3rem .65rem; border: 1px solid var(--rule-hard); border-radius: 3px;
+    background: var(--ground);
+  }
+  .loop-strip .arrow { border: none; padding: .3rem .1rem; color: var(--ink-faint); background: none; }
+
+  section { padding: clamp(2.5rem, 1.5rem + 3vw, 4.5rem) 0; }
+  section + section { border-top: 1px solid var(--rule); }
+  .kicker {
+    font-family: var(--mono); font-size: var(--step--1); letter-spacing: .13em;
+    text-transform: uppercase; color: var(--signal-ink); font-weight: 700; margin: 0 0 .6rem;
+  }
+  h2 {
+    font-family: var(--slab); font-weight: 600; font-size: var(--step-2);
+    margin: 0 0 1.1rem; letter-spacing: -.01em; text-wrap: balance;
+  }
+  h3 { font-family: var(--sans); font-weight: 700; font-size: 1.05rem; margin: 0 0 .4rem; }
+  p { margin: 0 0 1rem; text-wrap: pretty; }
+  p:last-child { margin-bottom: 0; }
+  .lead { font-size: 1.08rem; color: var(--ink-soft); max-width: 56ch; }
+
+  .loop { display: flex; flex-direction: column; }
+  .step {
+    display: grid; grid-template-columns: 3rem 1fr; gap: 0 1.1rem;
+    padding: 1.15rem 0; border-top: 1px solid var(--rule);
+  }
+  .loop > .step:last-child { border-bottom: 1px solid var(--rule); }
+  .step-n {
+    font-family: var(--slab); font-size: 1.6rem; font-weight: 600; color: var(--ink-faint);
+    line-height: 1.3; font-variant-numeric: tabular-nums;
+  }
+  .step-body p { color: var(--ink-soft); font-size: .96rem; }
+  .step-body h3 { margin-bottom: .3rem; }
+  .step-body .from {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: .5rem; display: block;
+  }
+
+  .failures { display: flex; flex-direction: column; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .failure { background: var(--paper); padding: 1.3rem 1.4rem; display: flex; flex-direction: column; gap: .5rem; }
+  .failure-tag {
+    display: inline-flex; align-items: center; gap: .4rem; font-family: var(--mono);
+    font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700;
+    color: var(--signal-ink);
+  }
+  .failure-tag::before { content: "✕"; }
+  .failure p { font-size: .93rem; color: var(--ink-soft); }
+  .meta-lesson {
+    margin-top: 1.4rem; padding: 1.2rem 1.4rem; border-left: 3px solid var(--signal);
+    background: var(--paper); border-radius: 0 6px 6px 0;
+  }
+  .meta-lesson .failure-tag { color: var(--ink); }
+  .meta-lesson .failure-tag::before { content: "→"; }
+
+  .tips { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr)); }
+  .tip {
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .45rem;
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+  .tip h3 { font-size: .95rem; }
+  .tip p { font-size: .89rem; color: var(--ink-soft); line-height: 1.55; margin: 0; }
+  .tip .from { font-family: var(--mono); font-size: .68rem; color: var(--ink-faint); letter-spacing: .04em; }
+
+  .warning {
+    border: 1px solid var(--signal); background: color-mix(in srgb, var(--signal) 8%, var(--paper));
+    border-radius: 6px; padding: 1.1rem 1.3rem; display: flex; flex-direction: column; gap: .4rem;
+  }
+  .warning .tag { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--signal-ink); }
+  .warning p { font-size: .92rem; color: var(--ink-soft); margin: 0; }
+
+  .choice { display: grid; gap: 1.2rem; grid-template-columns: 1fr 1fr; }
+  .choice-card {
+    background: var(--paper); border: 1px solid var(--rule-hard); border-radius: 8px;
+    padding: 1.6rem 1.6rem 1.8rem; display: flex; flex-direction: column; gap: .8rem;
+  }
+  .choice-card.primary { border-width: 2px; box-shadow: 4px 4px 0 var(--signal); }
+  .choice-label {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 700; color: var(--ink-faint);
+  }
+  .choice-card.primary .choice-label { color: var(--signal-ink); }
+  .choice-card h3 { font-family: var(--slab); font-size: 1.3rem; font-weight: 600; }
+  .choice-card p { font-size: .92rem; color: var(--ink-soft); }
+  .choice-card pre {
+    margin: .2rem 0 0; background: var(--ground); border-radius: 4px; padding: .7rem .85rem;
+    overflow-x: auto; font-family: var(--mono); font-size: .78rem; line-height: 1.6; color: var(--ink);
+  }
+  .cta {
+    display: inline-flex; align-items: center; gap: .4rem; margin-top: .4rem;
+    font-weight: 700; font-size: .92rem; text-decoration: none;
+  }
+  .choice-card.primary .cta { color: var(--signal-ink); }
+  .choice-card:not(.primary) .cta { color: var(--ink); }
+
+  footer.colophon {
+    padding-top: 3rem; margin-top: 1rem;
+    font-family: var(--mono); font-size: var(--step--1); color: var(--ink-faint);
+    display: flex; flex-wrap: wrap; gap: .4rem 1.4rem;
+  }
+  footer.colophon a { color: inherit; }
+
+  @media (max-width: 42rem) {
+    .choice { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 1fr; gap: .25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap wide">
+    <div class="doc-stamp">
+      <span>stylus nexus field manual</span>
+      <span>·</span>
+      <b>consolidated 2026</b>
+    </div>
+    <h1>The startup plan for<br>shipping with <em>agents.</em></h1>
+    <p class="dek">
+      What a founding engineer actually needs on day one: the loop, the failures already made
+      so you don't have to, and where to get the real thing.
+    </p>
+    <div class="loop-strip">
+      <span>think</span><span class="arrow">→</span>
+      <span>plan</span><span class="arrow">→</span>
+      <span>build</span><span class="arrow">→</span>
+      <span>verify</span><span class="arrow">→</span>
+      <span>review</span><span class="arrow">→</span>
+      <span>ship</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Why this page</p>
+    <h2>One workflow, not two guides.</h2>
+    <p class="lead">
+      This used to be two long guides &mdash; one for development, one for testing. Both got read
+      once and bookmarked. This is what's left after cutting everything that wasn't a decision
+      you'd actually make: the loop, the four failures that cost the most time, and the concrete
+      first moves. Then it points you at the repo you fork and the skills you install, so you're
+      building instead of reading.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap wide">
+    <p class="kicker">The loop</p>
+    <h2>Six steps, in order, every time.</h2>
+    <div class="loop">
+      <div class="step">
+        <div class="step-n">01</div>
+        <div class="step-body">
+          <h3>Think</h3>
+          <p><strong>Diverge before you commit.</strong> What are we actually solving, what's the unstated assumption, what could go wrong three different ways? No plan yet &mdash; just surfacing the options and edge cases a rushed first instinct would skip. This is the step deadline pressure cuts first, which is exactly the wrong one to cut.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <div class="step-body">
+          <h3>Plan</h3>
+          <p><strong>Converge and commit.</strong> Turn what thinking surfaced into a specific, written plan &mdash; files to touch, sequence, test cases in plain English, a definition of done. Domain agents (backend, UI, UX, AI, product, docs) weigh in from their own lane on that plan, not one generalist agent holding six domains in its head at once.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <div class="step-body">
+          <h3>Build</h3>
+          <p>Agents write against a CLAUDE.md that stays small on purpose, domain guidances that load only when relevant, and hooks that inject context automatically &mdash; instead of a growing wall of always-loaded instructions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">04</div>
+        <div class="step-body">
+          <h3>Verify</h3>
+          <p><strong>Does it run?</strong> Build, typecheck, test, lint &mdash; mechanical pass/fail, no judgment involved. If this fails, review never starts. AI mock fixtures keep the loop fast; real calls are for local spot-checks, never CI.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">05</div>
+        <div class="step-body">
+          <h3>Review</h3>
+          <p><strong>Should it run this way?</strong> Everything that passed verify but is still wrong &mdash; a bug, a security hole, a convention violated, an edge case nobody wrote a test for. Verify is a machine's job; review needs judgment, which is why solo developers get it from a second opinion instead of a teammate.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">06</div>
+        <div class="step-body">
+          <h3>Ship</h3>
+          <p>What made it this far gets measured, not assumed. A prompt or model change that "feels better" is guessed at 40% wrong &mdash; ten generations and a pass/fail count catches what manual testing misses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap wide">
+    <p class="kicker">Lessons, paid for already</p>
+    <h2>Four ways this goes wrong &mdash; and the one thing they had in common.</h2>
+    <p class="lead">Each of these shipped, was used for weeks, and had to be unwound. Skip straight to the fix.</p>
+
+    <div class="failures">
+      <div class="failure">
+        <span class="failure-tag">The mega-agent</span>
+        <p>One agent definition covering frontend, backend, database, content, security, analytics. Generic output that missed domain nuance &mdash; backend patterns applied to frontend code, UI suggestions during infrastructure work. <strong>Fix: split by domain.</strong> One agent, one lane.</p>
+      </div>
+      <div class="failure">
+        <span class="failure-tag">The mega-CLAUDE.md</span>
+        <p>Every rule, pattern, gotcha, and convention in one file. Felt thorough. Started burning thousands of tokens loading AI-safety docs to edit CSS, and rules buried mid-file stopped getting followed. <strong>Fix: a small root file, domain guidances loaded on demand.</strong></p>
+      </div>
+      <div class="failure">
+        <span class="failure-tag">Ephemeral knowledge</span>
+        <p>An agent discovers a workaround, it lives in that conversation, and vanishes when the conversation ends. Same discovery, same 30-minute debugging session, the following week. <strong>Fix: persistent per-agent memory, one line per insight, linked for depth.</strong></p>
+      </div>
+      <div class="failure">
+        <span class="failure-tag">Gut-feel prompting</span>
+        <p>Prompt changes judged by whether they "felt better." When actually measured, intuition was wrong about 40% of the time &mdash; changes assumed to help sometimes made things worse. <strong>Fix: ten generations, structured pass/fail, before trusting a change.</strong></p>
+      </div>
+    </div>
+
+    <div class="meta-lesson">
+      <span class="failure-tag">The meta-lesson</span>
+      <p>All four came from the same instinct: keep things simple by centralizing. One agent, one file, one conversation, one gut feel. The fix was always the same &mdash; decompose, specialize, measure. More infrastructure upfront. It scales where the simple version doesn't.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap wide">
+    <p class="kicker">First moves</p>
+    <h2>What to actually do this week.</h2>
+    <div class="tips">
+      <div class="tip">
+        <h3>Start your CLAUDE.md at 20 lines, not 500</h3>
+        <p>Dev commands and 3-4 gotchas. It grows on its own &mdash; every entry earns its place because you hit that exact issue twice.</p>
+      </div>
+      <div class="tip">
+        <h3>Keep memory files under 200 lines</h3>
+        <p>They load into context every run. Use topic files for depth, one line per insight in the index, and link out rather than inline.</p>
+      </div>
+      <div class="tip">
+        <h3>Start with three skills, not eleven</h3>
+        <p>Brainstorm, TDD, verify. Those three alone change how you work. Adopt the rest &mdash; plan, execute, debug, review, ship, measure &mdash; once you feel the gap.</p>
+      </div>
+      <div class="tip">
+        <h3>Run agents sequentially before parallel</h3>
+        <p>Master the chain &mdash; brainstorm, plan, execute, verify, ship &mdash; one agent at a time. Parallel dispatch is a coordination problem you don't need on day one.</p>
+      </div>
+      <div class="tip">
+        <h3>One MCP server, not seven</h3>
+        <p>Start with context7 or GitHub. Add the next one only when an agent keeps needing the same external system and doesn't have it.</p>
+      </div>
+      <div class="tip">
+        <h3>Test at more than one viewport</h3>
+        <p>A layout that holds at 1920px can break at 768px. Separate desktop and mobile projects in the Playwright config, not an afterthought.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap wide">
+    <p class="kicker">Before you forget</p>
+    <h2>Two ways to lose a week.</h2>
+    <div class="tips" style="grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));">
+      <div class="warning">
+        <span class="tag">Security</span>
+        <p>Auth bypass for E2E tests must never be reachable in production. Gate it behind an env var that only exists in test/dev &mdash; middleware checks <code>process.env.E2E_BYPASS_AUTH === '1'</code>, and in production that variable simply doesn't exist.</p>
+      </div>
+      <div class="warning">
+        <span class="tag">Cost</span>
+        <p>GitHub Actions' free tier is 2,000 minutes a month. Each E2E run costs 2&ndash;10 minutes. Setting all your workflows to run automatically on every push can burn 500+ minutes a month on an active repo &mdash; start with smoke-on-PR, promote to nightly and visual only once you need them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap wide">
+    <p class="kicker">Get moving</p>
+    <h2>Fork the repo, or install just the skills.</h2>
+    <p class="lead">Both get you the same patterns this page describes. The difference is whether you want a starting repo or a set of skills that drop into the project you already have.</p>
+
+    <div class="choice">
+      <div class="choice-card primary">
+        <span class="choice-label">Starter repo</span>
+        <h3>Fork full&#8209;starter</h3>
+        <p>CLAUDE.md, agents, skills, hooks, Playwright E2E, and CI workflows &mdash; pre-merged, one repo, setup docs for Claude Code, Codex, and Cursor.</p>
+        <pre>git clone \
+  github.com/stylusnexus/full-starter</pre>
+        <a class="cta" href="https://github.com/stylusnexus/full-starter">github.com/stylusnexus/full-starter →</a>
+      </div>
+      <div class="choice-card">
+        <span class="choice-label">Marketplace</span>
+        <h3>Install agent&#8209;plugins</h3>
+        <p>The review-merge-ship loop, evidence-before-done verification, and more as installable skills &mdash; the same ones run in production, into whatever project you already have.</p>
+        <pre>npx skills add \
+  stylusnexus/agent-plugins</pre>
+        <a class="cta" href="https://github.com/stylusnexus/agent-plugins">github.com/stylusnexus/agent-plugins →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap wide">
+  <footer class="colophon">
+    <span>Built by <a href="https://github.com/stylusnexus">Stylus Nexus</a></span>
+    <span><a href="https://github.com/stylusnexus/startup-plan">View source</a></span>
+    <span>© Stylus Nexus Holdings LLC</span>
+  </footer>
+</div>
+
+</body>
+</html>
