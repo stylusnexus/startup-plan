@@ -195,14 +195,20 @@
   /* ---- prompt block (collapsed by default) ---- */
   .prompt-card {
     background: var(--paper); border: 1px solid var(--rule-hard); border-radius: 8px;
-    margin-top: 1.4rem; overflow: hidden;
+    margin: 1.4rem 0 1.8rem; overflow: hidden;
   }
   .prompt-card summary {
     cursor: pointer; padding: 1.1rem 1.4rem; list-style: none;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   }
   .prompt-card summary::-webkit-details-marker { display: none; }
-  .prompt-card summary h3 { margin: 0; color: var(--caution); }
+  .prompt-card summary h3 { margin: 0; }
+  .prompt-card.caution summary {
+    background: color-mix(in srgb, var(--caution) 22%, var(--paper));
+    border-bottom: 1px solid color-mix(in srgb, var(--caution) 45%, var(--paper));
+  }
+  .prompt-card.caution summary h3 { color: var(--ink); }
+  .prompt-card.caution[open] summary { border-bottom-color: color-mix(in srgb, var(--caution) 45%, var(--paper)); }
   .prompt-card summary .disclosure {
     font-family: var(--mono); font-size: .78rem; color: var(--ink-faint);
     flex-shrink: 0; transition: transform .15s ease;
@@ -391,6 +397,42 @@
   <div class="wrap wide">
     <p class="kicker">First moves</p>
     <h2>What to actually do this week.</h2>
+
+    <details class="prompt-card caution">
+      <summary>
+        <h3>Before any of this: a validation gate</h3>
+        <span class="disclosure">▸ expand</span>
+      </summary>
+      <div class="prompt-body">
+        <p>The most expensive mistake isn't a bad pattern &mdash; it's building the wrong thing well. Paste this into your agent before you scaffold anything.</p>
+        <div class="pre-wrap">
+          <button type="button" class="copy-btn" data-copy-target="validation-gate-prompt">Copy</button>
+<pre id="validation-gate-prompt">Before we start a new project, run me through a validation gate. Don't
+let me skip a step because I'm excited, and push back if I try to write
+code before step 3 is done.
+
+1. Ask who the target user is and what's the most annoying part of
+   their day related to this idea. Help me write one sentence: "When
+   ___ happens, I want to ___, so I can ___."
+
+2. Classify it: painkiller (costs real hours or dollars every week) or
+   vitamin (nice to have). Tell me plainly if it's a vitamin -- that
+   doesn't clear this gate.
+
+3. Help me design the cheapest possible demand test I can run in 7
+   days -- a waitlist, a preorder, or a manual pilot offer -- and define
+   what "someone actually commits" looks like for this specific idea.
+   A soft "yes that's cool" doesn't count. Money or a hard commitment does.
+
+4. Only once I report back real evidence from step 3, help me scope a
+   24-hour MVP: one core loop, end to end. Ship it only if all three are
+   true -- a new user gets value within 60 seconds, that value is
+   immediate, and I can manually fix any bad output myself.</pre>
+        </div>
+        <p class="prompt-source">Adapted from the validation discipline in <em>The Vibe Coding Playbook</em> (Murugappan) &mdash; own the pain data, then prove willingness-to-pay before you open the code editor.</p>
+      </div>
+    </details>
+
     <div class="tips">
       <div class="tip">
         <h3>Start your CLAUDE.md at 20 lines, not 500</h3>
@@ -434,38 +476,65 @@
       </div>
     </div>
 
+
     <details class="prompt-card">
       <summary>
-        <h3>Before any of this: a validation gate</h3>
+        <h3>Apply these principles agentically</h3>
         <span class="disclosure">▸ expand</span>
       </summary>
       <div class="prompt-body">
-        <p>The most expensive mistake isn't a bad pattern &mdash; it's building the wrong thing well. Paste this into your agent before you scaffold anything.</p>
+        <p>The gate above is a one-time check before you start. This is different &mdash; paste it into a project's instructions (CLAUDE.md, AGENTS.md, or the start of a session) so your agent treats these as standing rules, not things it read once and forgot.</p>
         <div class="pre-wrap">
-          <button type="button" class="copy-btn" data-copy-target="validation-gate-prompt">Copy</button>
-<pre id="validation-gate-prompt">Before we start a new project, run me through a validation gate. Don't
-let me skip a step because I'm excited, and push back if I try to write
-code before step 3 is done.
+          <button type="button" class="copy-btn" data-copy-target="agentic-principles-prompt">Copy</button>
+<pre id="agentic-principles-prompt">Adopt these as working rules for this project, not just advice to
+remember. Push back on me if I ask you to skip one under deadline
+pressure -- that's exactly when they matter most.
 
-1. Ask who the target user is and what's the most annoying part of
-   their day related to this idea. Help me write one sentence: "When
-   ___ happens, I want to ___, so I can ___."
+THINK BEFORE YOU PLAN
+When I bring you a task, diverge before you converge: surface the
+unstated assumption and at least one alternative before proposing a
+plan. Don't skip straight to a plan because I seem rushed -- say so
+if that's what's happening.
 
-2. Classify it: painkiller (costs real hours or dollars every week) or
-   vitamin (nice to have). Tell me plainly if it's a vitamin -- that
-   doesn't clear this gate.
+VERIFY, THEN REVIEW -- NOT THE SAME GATE
+"It builds and passes tests" and "it's actually correct" are two
+different checks. Never report something done on the first alone.
+Name the specific bugs, security issues, or convention violations you
+checked for in review, even if you found none.
 
-3. Help me design the cheapest possible demand test I can run in 7
-   days -- a waitlist, a preorder, or a manual pilot offer -- and define
-   what "someone actually commits" looks like for this specific idea.
-   A soft "yes that's cool" doesn't count. Money or a hard commitment does.
+MEMORY BY SCOPE, NOT CONVENIENCE
+Before writing anything to persistent memory, ask whether every
+future session needs it or only one specialty does. Shared memory
+gets facts every agent needs. Anything domain-specific goes in that
+domain's own memory, not the shared file.
 
-4. Only once I report back real evidence from step 3, help me scope a
-   24-hour MVP: one core loop, end to end. Ship it only if all three are
-   true -- a new user gets value within 60 seconds, that value is
-   immediate, and I can manually fix any bad output myself.</pre>
+DECOMPOSE INSTEAD OF CENTRALIZING
+If you're holding multiple unrelated domains in one agent
+definition, one long instructions file, or one sprawling
+conversation, stop and split it. That instinct -- keep it simple by
+centralizing -- is the most common way this goes wrong.
+
+MEASURE BEFORE CLAIMING BETTER
+Before calling a prompt, model, or approach change an improvement,
+run it against a handful of real cases and count pass/fail. "This
+feels better" is not evidence, and you should say so if that's all
+either of us has.
+
+SCREENSHOT VISUAL CHANGES, DON'T ASSERT THEM
+After any UI change, take a screenshot and describe what you
+actually see before claiming it's correct. Correct-looking code is
+not the same claim as a correct-looking screen.
+
+CI STAYS MANUAL UNTIL IT EARNS AUTOMATION
+Default new workflows to a manual trigger. Only propose automatic
+triggers once there's a concrete reason -- a bug that would've been
+caught, a teammate who needs the signal.
+
+PARALLEL ONLY WHEN GENUINELY INDEPENDENT
+Before running two things in parallel, state why they share no state
+and don't depend on each other's output. If you can't state that
+plainly, run them sequentially instead.</pre>
         </div>
-        <p class="prompt-source">Adapted from the validation discipline in <em>The Vibe Coding Playbook</em> (Murugappan) &mdash; own the pain data, then prove willingness-to-pay before you open the code editor.</p>
       </div>
     </details>
   </div>
@@ -474,7 +543,7 @@ code before step 3 is done.
 <section>
   <div class="wrap wide">
     <p class="kicker">Before you forget</p>
-    <h2>Two ways to lose a week.</h2>
+    <h2>Three ways to lose a week.</h2>
     <div class="tips" style="grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));">
       <div class="warning">
         <span class="tag">Security</span>
@@ -483,6 +552,10 @@ code before step 3 is done.
       <div class="warning">
         <span class="tag">Cost</span>
         <p>GitHub Actions' free tier is 2,000 minutes a month. Each E2E run costs 2&ndash;10 minutes. Setting all your workflows to run automatically on every push can burn 500+ minutes a month on an active repo &mdash; start with smoke-on-PR, promote to nightly and visual only once you need them.</p>
+      </div>
+      <div class="warning">
+        <span class="tag">False confidence</span>
+        <p>Tests pass, types check, lint is clean, and the layout is still broken &mdash; overlapping elements, wrong spacing, invisible text on a same-colored background. None of that is visible to a programmatic assertion. Only a pixel-diff against a saved baseline catches it, and it's the check most setups skip.</p>
       </div>
     </div>
   </div>
