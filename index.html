@@ -191,6 +191,29 @@
   .choice-card.primary .cta { color: var(--signal-ink); }
   .choice-card:not(.primary) .cta { color: var(--ink); }
 
+  /* ---- coverage table ---- */
+  .coverage { display: flex; flex-direction: column; }
+  .cov-row {
+    display: grid; grid-template-columns: 7rem 1fr 1fr; gap: 0 1rem;
+    padding: .95rem 0; border-top: 1px solid var(--rule); align-items: center;
+  }
+  .coverage > .cov-row:last-child { border-bottom: 1px solid var(--rule); }
+  .cov-row.head {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-faint); border-top: none; padding-bottom: .5rem;
+  }
+  .cov-step { font-weight: 700; font-size: .95rem; }
+  .cov-badge {
+    display: inline-flex; align-items: center; gap: .35rem; font-family: var(--mono);
+    font-size: .74rem; font-weight: 700; letter-spacing: .03em; padding: .2rem .55rem;
+    border-radius: 3px; width: fit-content;
+  }
+  .cov-badge.ours { color: var(--ok); border: 1px solid var(--ok); }
+  .cov-badge.theirs { color: var(--ink-faint); border: 1px solid var(--rule); }
+  .cov-detail { font-size: .87rem; color: var(--ink-soft); }
+  .cov-detail a { color: var(--signal-ink); font-weight: 600; }
+  .cov-detail code { font-size: .85em; }
+
   footer.colophon {
     padding-top: 3rem; margin-top: 1rem;
     font-family: var(--mono); font-size: var(--step--1); color: var(--ink-faint);
@@ -201,6 +224,8 @@
   @media (max-width: 42rem) {
     .choice { grid-template-columns: 1fr; }
     .step { grid-template-columns: 1fr; gap: .25rem; }
+    .cov-row { grid-template-columns: 1fr; gap: .35rem; }
+    .cov-row.head { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 </style>
@@ -372,6 +397,48 @@
       <div class="warning">
         <span class="tag">Cost</span>
         <p>GitHub Actions' free tier is 2,000 minutes a month. Each E2E run costs 2&ndash;10 minutes. Setting all your workflows to run automatically on every push can burn 500+ minutes a month on an active repo &mdash; start with smoke-on-PR, promote to nightly and visual only once you need them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap wide">
+    <p class="kicker">What's actually ours</p>
+    <h2>The loop, and who covers each step.</h2>
+    <p class="lead">We don't own every step, and we're not pretending to. Where we have a published skill, it's linked below. Where we don't, that's someone else's tool we depend on &mdash; linked instead of reinvented.</p>
+
+    <div class="coverage">
+      <div class="cov-row head"><span>Step</span><span>Coverage</span><span>Where</span></div>
+      <div class="cov-row">
+        <span class="cov-step">Think</span>
+        <span class="cov-badge theirs">not ours</span>
+        <span class="cov-detail"><code>brainstorming</code> is part of <a href="https://github.com/obra/superpowers">obra/superpowers</a>, a plugin we run and don't try to replace.</span>
+      </div>
+      <div class="cov-row">
+        <span class="cov-step">Plan</span>
+        <span class="cov-badge theirs">not ours</span>
+        <span class="cov-detail"><code>writing-plans</code> and <code>test-driven-development</code>, also <a href="https://github.com/obra/superpowers">obra/superpowers</a>.</span>
+      </div>
+      <div class="cov-row">
+        <span class="cov-step">Build</span>
+        <span class="cov-badge ours">ours</span>
+        <span class="cov-detail"><code>db-truth</code> and <code>db-migration-safety</code> (schema work), <code>read-the-damn-docs</code> (third-party APIs) &mdash; <a href="https://github.com/stylusnexus/agent-plugins">agent-plugins</a>.</span>
+      </div>
+      <div class="cov-row">
+        <span class="cov-step">Verify</span>
+        <span class="cov-badge ours">ours</span>
+        <span class="cov-detail"><code>prove-it</code> &mdash; <a href="https://github.com/stylusnexus/agent-plugins">agent-plugins</a>, <code>ship-pipeline</code> pack.</span>
+      </div>
+      <div class="cov-row">
+        <span class="cov-step">Review</span>
+        <span class="cov-badge ours">ours</span>
+        <span class="cov-detail"><code>review-merge-pipeline</code> plus the whole <code>second-opinion</code> pack &mdash; <a href="https://github.com/stylusnexus/agent-plugins">agent-plugins</a>.</span>
+      </div>
+      <div class="cov-row">
+        <span class="cov-step">Ship</span>
+        <span class="cov-badge ours">ours</span>
+        <span class="cov-detail"><code>deploy</code> plus the <code>release-ops</code> pack &mdash; <a href="https://github.com/stylusnexus/agent-plugins">agent-plugins</a>.</span>
       </div>
     </div>
   </div>
