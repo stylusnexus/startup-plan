@@ -10,10 +10,33 @@
   <meta property="og:description" content="The loop, the failures already made, and where to fork or install. A practical playbook for shipping software with AI coding agents." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://stylusnexus.github.io/startup-plan/" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="https://stylusnexus.github.io/startup-plan/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="The startup plan for shipping with agents: think, plan, build, verify, review, ship." />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The Startup Plan" />
   <meta name="twitter:description" content="The loop, the failures already made, and where to fork or install." />
+  <meta name="twitter:image" content="https://stylusnexus.github.io/startup-plan/og-image.png" />
+  <meta name="twitter:image:alt" content="The startup plan for shipping with agents: think, plan, build, verify, review, ship." />
   <link rel="canonical" href="https://stylusnexus.github.io/startup-plan/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The Startup Plan — Shipping with AI Agents",
+    "description": "The loop, the failures already made, and where to fork or install. A practical playbook for shipping software with AI coding agents, from a team that does it daily.",
+    "url": "https://stylusnexus.github.io/startup-plan/",
+    "mainEntityOfPage": "https://stylusnexus.github.io/startup-plan/",
+    "image": "https://stylusnexus.github.io/startup-plan/og-image.png",
+    "inLanguage": "en",
+    "genre": "Playbook",
+    "about": ["AI coding agents", "Software development workflow", "Startup engineering"],
+    "author": { "@type": "Organization", "name": "Stylus Nexus", "url": "https://stylusnexus.github.io/" },
+    "publisher": { "@type": "Organization", "name": "Stylus Nexus", "url": "https://stylusnexus.github.io/" }
+  }
+  </script>
 
 <style>
   :root {
@@ -341,6 +364,7 @@
         <div class="step-body">
           <h3>Verify</h3>
           <p><strong>Does it run?</strong> Build, typecheck, test, lint &mdash; mechanical pass/fail, no judgment involved. If this fails, review never starts. AI mock fixtures keep the loop fast; real calls are for local spot-checks, never CI.</p>
+          <p>One check earns its own rule, because we shipped the same bug three times before adding it: <strong>any value threaded through two or more hops needs a test at its final destination proving it arrived.</strong> The bug class survives ordinary review because every hop is locally correct &mdash; each function does receive the value and pass it on &mdash; but a destructure omits it, a mapping drops it, or a spread overwrites it. Nothing throws. A test at hop three proves nothing about hop five.</p>
         </div>
       </div>
       <div class="step">
@@ -348,6 +372,7 @@
         <div class="step-body">
           <h3>Review</h3>
           <p><strong>Should it run this way?</strong> Everything that passed verify but is still wrong &mdash; a bug, a security hole, a convention violated, an edge case nobody wrote a test for. Verify is a machine's job; review needs judgment, which is why solo developers get it from a second opinion instead of a teammate.</p>
+          <p>A second opinion covers code. It does not cover the things only you can judge &mdash; whether the draft says what you meant, whether the plan is the one you want built. There the bottleneck is not judgment but the channel: describing a wording change in chat costs more than making it, and &ldquo;the third paragraph feels off&rdquo; throws away the phrase that caused the feeling. Mark the artifact up directly instead, and hand back edits and comments anchored to exact quotes.</p>
         </div>
       </div>
       <div class="step">
