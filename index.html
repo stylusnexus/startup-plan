@@ -558,7 +558,23 @@ caught, a teammate who needs the signal.
 PARALLEL ONLY WHEN GENUINELY INDEPENDENT
 Before running two things in parallel, state why they share no state
 and don't depend on each other's output. If you can't state that
-plainly, run them sequentially instead.</pre>
+plainly, run them sequentially instead.
+
+BLAST RADIUS BEFORE STATE CHANGES
+Before any delete, force operation, bulk edit, or production change,
+print the exact scope it will touch and confirm the evidence supports
+that action. "It should only affect X" is a guess until you've listed
+what it affects.
+
+WHEN THE DOCS AND REALITY DISAGREE, SAY SO
+If live code, data, or config contradicts the spec, the issue, or
+these instructions, report the contradiction and stop that thread.
+Don't quietly reconcile the two -- that's how a wrong assumption ships.
+
+STOP AFTER TWO FAILED FIXES
+If verification fails twice after a reasonable fix, stop. Report the
+exact commands, the output, and your best hypothesis. Don't loop a
+third time, and don't switch to a different approach without saying so.</pre>
         </div>
       </div>
     </details>
