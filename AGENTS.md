@@ -23,5 +23,5 @@ Don't expand it into any of those. Add detail by linking out, not by growing the
 - Each prompt lives in two places: a file under `prompts/` and a copy in a `<pre>` on the page. Change both, then run `python3 scripts/check-sync.py`. It must exit 0.
 - The two longer source guides are private. Never link to them from this public repo.
 - Check the page at a phone width (about 390px) after layout edits; it must not scroll sideways.
-- Write as "we at Stylus Nexus", not "I".
+- Write the page's own prose as "we at Stylus Nexus", not "I". The prompts are the exception: they speak in the reader's voice ("I", "me") on purpose, so leave that as is.
 - The repo is MIT licensed. Don't add content that isn't ours to license.
