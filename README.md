@@ -1,17 +1,30 @@
 # The Startup Plan
 
-The loop, the failures already made, and where to fork or install. A practical playbook for shipping software with AI coding agents, consolidated from two longer guides — [Shipping with Agents](https://github.com/stylusnexus/shipping-with-agents) and [Testing with Agents](https://github.com/stylusnexus/testing-with-agents).
+A short written guide for people starting to build software with AI coding agents such as Claude Code, Codex, or Cursor. It lays out a six-step working loop, the four mistakes that cost us the most time, and what to do in your first week.
 
 **Read it:** https://stylusnexus.github.io/startup-plan/
 
 By [Stylus Nexus](https://github.com/stylusnexus).
 
+## Use it when
+
+- You're about to start a project with an AI coding agent and want a working method before you write code
+- Your agent says "done" and you don't trust it
+- You want standing rules you can paste into your project's instructions file (see the prompts below)
+
 ## What's here
 
-- **The loop** — think, plan, build, verify, review, ship, with the distinctions that actually matter (think diverges, plan commits; verify is mechanical, review needs judgment)
-- **Four failures** — the mega-agent, the mega-CLAUDE.md, ephemeral knowledge, gut-feel prompting, and the one instinct behind all four
-- **First moves** — concrete, this-week actions
-- **Where to go next** — fork [full-starter](https://github.com/stylusnexus/full-starter) for a complete repo, or install skills directly from [agent-plugins](https://github.com/stylusnexus/agent-plugins) into a project you already have
+- **The loop:** think, plan, build, verify, review, ship. Think widens the options and plan commits to one. Verify is a mechanical pass/fail; review needs judgment.
+- **Four failures:** the mega-agent, the mega-CLAUDE.md, knowledge that lives only in a chat, and prompting by gut feel. One instinct sits behind all four.
+- **First moves:** concrete things to do this week
+- **Where to go next:** [full-starter](https://github.com/stylusnexus/full-starter) is a project template you fork to set the workflow up. [agent-plugins](https://github.com/stylusnexus/agent-plugins) holds skills you install into a project you already have.
+
+## What this is NOT
+
+- **Not software.** It's a web page and two prompt files. There's nothing to install.
+- **Not a course or the full guide.** It's the short version of two longer guides we wrote for ourselves, kept short on purpose.
+- **Not research.** It's one team's experience, not a study or a benchmark.
+- **Not tied to one tool.** Some examples use Claude Code file names. The loop and the failures apply to any coding agent.
 
 ## Prompts
 
