@@ -41,3 +41,7 @@ curl -s https://raw.githubusercontent.com/stylusnexus/startup-plan/main/prompts/
 ## Editing
 
 Single self-contained `index.html`, no build step, no dependencies. Served via GitHub Pages from `main`.
+
+## License
+
+MIT. See [LICENSE](LICENSE). You can reuse the prompts and the page; keep the copyright notice.
