@@ -42,6 +42,8 @@ curl -s https://raw.githubusercontent.com/stylusnexus/startup-plan/main/prompts/
 
 Single self-contained `index.html`, no build step, no dependencies. Served via GitHub Pages from `main`.
 
+Each prompt lives in two places: a file under `prompts/` and a copy on the page. After editing either, run `python3 scripts/check-sync.py`. It fails if they differ.
+
 ## License
 
 MIT. See [LICENSE](LICENSE). You can reuse the prompts and the page; keep the copyright notice.
